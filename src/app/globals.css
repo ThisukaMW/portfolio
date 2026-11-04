@@ -41,6 +41,9 @@
 html {
   background: var(--color-bg);
   color-scheme: dark;
+  /* iOS Safari ignores user-scalable=no, so pinch and double-tap zoom are also blocked here */
+  touch-action: pan-x pan-y;
+  -webkit-text-size-adjust: 100%;
 }
 
 html.lenis,

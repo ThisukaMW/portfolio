@@ -2,11 +2,25 @@
 
 import { AnimatePresence, motion, useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
 import { ArrowDown, Download } from "lucide-react";
-import { useEffect, useRef, useState, type ReactNode, type PointerEvent } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode, type PointerEvent } from "react";
 import { profile, rotatingWords } from "@/data/portfolio";
 import { GithubIcon, LinkedinIcon } from "./icons";
 import { ParticleField } from "./particle-field";
 import { Portrait } from "./portrait";
+
+const desktopQuery = "(min-width: 1024px)";
+
+function useIsDesktop() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia(desktopQuery);
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(desktopQuery).matches,
+    () => false,
+  );
+}
 
 function SplitName({ text, delay }: { text: string; delay: number }) {
   return (
@@ -80,9 +94,10 @@ export function Hero() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 160]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const isDesktop = useIsDesktop();
 
   return (
-    <section ref={ref} id="top" className="relative flex min-h-svh items-center overflow-hidden pb-20 pt-32">
+    <section ref={ref} id="top" className="relative flex min-h-svh items-center overflow-hidden pb-16 pt-28 md:pb-20 md:pt-32">
       {/* Background layers */}
       <ParticleField />
       <div className="pointer-events-none absolute -left-40 top-20 h-[500px] w-[500px] rounded-full bg-accent/20 blur-[120px]" />
@@ -90,8 +105,9 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-bg to-transparent" />
 
       <motion.div
-        style={{ y, opacity }}
-        className="relative mx-auto grid w-full max-w-7xl items-center gap-16 px-5 md:px-8 lg:grid-cols-[1.25fr_1fr]"
+        // On phones the hero is taller than the screen, so fading it would hide the photo
+        style={isDesktop ? { y, opacity } : undefined}
+        className="relative mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-14 px-5 lg:gap-16 md:px-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]"
       >
         <div>
           <motion.a
@@ -99,7 +115,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-line bg-surface/60 py-1.5 pl-2 pr-4 text-sm backdrop-blur"
+            className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-line bg-surface/60 py-1.5 pl-2 pr-4 text-xs backdrop-blur md:mb-8 md:text-sm"
           >
             <span className="relative flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-3 opacity-75" />
@@ -108,7 +124,7 @@ export function Hero() {
             {profile.status}
           </motion.a>
 
-          <h1 className="font-display text-[clamp(2.6rem,7vw,5.75rem)] font-semibold leading-[0.9] tracking-[-0.04em]">
+          <h1 className="font-display text-[13.5vw] md:text-[clamp(2.6rem,7vw,5.75rem)] font-semibold leading-[0.9] tracking-[-0.04em]">
             <SplitName text={profile.firstName} delay={0.4} />
             <br />
             <span className="text-muted/60">
@@ -122,10 +138,10 @@ export function Hero() {
             transition={{ delay: 1.1, duration: 0.8 }}
             className="mt-8 max-w-xl"
           >
-            <p className="font-mono text-sm uppercase tracking-[0.2em] text-muted">
+            <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted sm:text-sm sm:tracking-[0.2em]">
               {profile.role} <span className="text-accent-2">/</span> {profile.focus}
             </p>
-            <p className="mt-5 text-xl leading-relaxed text-fg/90 md:text-2xl">
+            <p className="mt-4 text-lg leading-relaxed text-fg/90 md:mt-5 md:text-2xl">
               I build <RotatingWord />
               <br className="hidden sm:block" /> that keep working when things go wrong.
             </p>

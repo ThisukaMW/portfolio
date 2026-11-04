@@ -32,18 +32,18 @@ export function Skills() {
         Frontend, backend, data and AI: I can take a feature from the database schema to the UI, and plug in ML where it earns its place.
       </SectionHeading>
 
-      <div className="grid gap-4 md:grid-cols-6">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-6">
         {skills.map((g, i) => (
           <Reveal key={g.group} delay={(i % 3) * 0.06} className={spans[i]}>
             <div
               onPointerMove={trackSpotlight}
-              className="spotlight group h-full overflow-hidden rounded-3xl border border-line bg-surface/60 p-6 md:p-7"
+              className="spotlight group h-full overflow-hidden rounded-3xl border border-line bg-surface/60 p-5 md:p-7"
             >
               <div className="flex items-center justify-between">
-                <h3 className="font-display text-2xl font-semibold">{g.group}</h3>
+                <h3 className="font-display text-xl font-semibold md:text-2xl">{g.group}</h3>
                 <span className="h-2.5 w-2.5 rounded-full" style={{ background: accents[i], boxShadow: `0 0 16px ${accents[i]}` }} />
               </div>
-              <div className="mt-6 flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-wrap gap-1.5 md:mt-6 md:gap-2">
                 {g.items.map((s, j) => (
                   <motion.span
                     key={s}
@@ -52,7 +52,7 @@ export function Skills() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.15 + j * 0.04 }}
                     whileHover={{ y: -3, borderColor: accents[i] }}
-                    className="cursor-default rounded-xl border border-line bg-bg/60 px-3.5 py-2 text-sm"
+                    className="cursor-default rounded-xl border border-line bg-bg/60 px-3 py-1.5 text-[13px] md:px-3.5 md:py-2 md:text-sm"
                   >
                     {s}
                   </motion.span>

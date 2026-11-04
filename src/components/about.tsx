@@ -56,14 +56,13 @@ function Terminal() {
         <span className="h-3 w-3 rounded-full bg-[#28c840]" />
         <span className="ml-3 font-mono text-xs text-muted">~/thisuka — whoami.ts</span>
       </div>
-      <pre className="overflow-x-auto p-6 font-mono text-[13px] leading-7 md:text-sm">
+      <pre className="whitespace-pre-wrap break-words p-5 font-mono text-xs leading-6 md:p-6 md:text-sm md:leading-7">
         <span className="text-muted">$ </span>
         <span className="text-accent-3">npx</span> whoami
         {"\n"}
         <span className="text-accent">const</span> <span className="text-accent-2">me</span> = {"{"}
         {terminalLines.slice(0, shown).map((l) => (
-          <motion.span key={l.k} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} className="block">
-            {"  "}
+          <motion.span key={l.k} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} className="block pl-[2ch]">
             <span className="text-fg">{l.k}</span>: <span className="text-[#f5b942]">{l.v}</span>,
           </motion.span>
         ))}
@@ -90,7 +89,7 @@ export function About() {
         {profile.summary}
       </SectionHeading>
 
-      <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
         <Reveal>
           <Terminal />
         </Reveal>
@@ -100,15 +99,15 @@ export function About() {
             <Reveal key={s.label} delay={i * 0.08}>
               <div
                 onPointerMove={trackSpotlight}
-                className="spotlight flex h-full flex-col justify-between rounded-3xl border border-line bg-surface/60 p-6"
+                className="spotlight flex h-full flex-col justify-between rounded-3xl border border-line bg-surface/60 p-4 md:p-6"
               >
-                <p className="font-display text-5xl font-semibold tracking-tight md:text-6xl">
+                <p className="font-display text-4xl font-semibold tracking-tight md:text-6xl">
                   <Counter value={s.value} decimals={s.decimals} />
                   <span className="text-accent-2">{s.suffix}</span>
                 </p>
-                <div className="mt-6">
-                  <p className="font-medium">{s.label}</p>
-                  <p className="mt-1 text-sm text-muted">{s.sub}</p>
+                <div className="mt-4 md:mt-6">
+                  <p className="text-sm font-medium md:text-base">{s.label}</p>
+                  <p className="mt-1 text-xs text-muted md:text-sm">{s.sub}</p>
                 </div>
               </div>
             </Reveal>
@@ -116,12 +115,12 @@ export function About() {
         </div>
       </div>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-3">
+      <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
         {education.map((e, i) => (
           <Reveal key={e.title} delay={i * 0.08}>
-            <div className="h-full rounded-3xl border border-line bg-surface/40 p-6">
+            <div className="h-full rounded-3xl border border-line bg-surface/40 p-5 md:p-6">
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent-2">{e.period}</p>
-              <p className="mt-3 font-display text-xl font-semibold leading-snug">{e.title}</p>
+              <p className="mt-2 font-display text-lg font-semibold leading-snug md:mt-3 md:text-xl">{e.title}</p>
               <p className="mt-1 text-sm text-muted">{e.org}</p>
               {e.detail && <p className="mt-4 text-sm text-fg/80">{e.detail}</p>}
             </div>
@@ -129,7 +128,7 @@ export function About() {
         ))}
       </div>
 
-      <div className="mt-4 grid gap-4 md:grid-cols-2">
+      <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
         {certifications.map((c, i) => (
           <Reveal key={c.credentialId} delay={i * 0.08}>
             <a
@@ -146,7 +145,7 @@ export function About() {
                 <p className="mt-0.5 text-sm text-muted">
                   {c.issuer} · Issued {c.issued}
                 </p>
-                <p className="mt-1 truncate font-mono text-[11px] text-muted/70">ID {c.credentialId}</p>
+                <p className="mt-1 hidden truncate font-mono text-[11px] text-muted/70 sm:block">ID {c.credentialId}</p>
               </div>
               <span className="flex shrink-0 items-center gap-1 text-sm text-muted transition-colors group-hover:text-fg">
                 <span className="hidden sm:inline">Verify</span>

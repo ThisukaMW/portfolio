@@ -10,7 +10,7 @@ import { SectionHeading, trackSpotlight } from "./reveal";
 function MetricPanel({ p }: { p: Project }) {
   return (
     <div
-      className="relative flex min-h-[260px] flex-col justify-between overflow-hidden rounded-[1.6rem] p-7"
+      className="relative order-first flex min-h-[180px] flex-col justify-between gap-6 overflow-hidden rounded-[1.6rem] p-5 lg:order-none lg:min-h-[260px] lg:gap-0 lg:p-7"
       style={{
         background: `radial-gradient(120% 120% at 100% 0%, ${p.color}55, transparent 55%), linear-gradient(160deg, ${p.color}22, #0b0b12 70%)`,
       }}
@@ -25,7 +25,7 @@ function MetricPanel({ p }: { p: Project }) {
         }}
       />
       {/* Orbiting node */}
-      <div className="absolute right-8 top-8 h-28 w-28 rounded-full border" style={{ borderColor: `${p.color}55` }}>
+      <div className="absolute right-5 top-5 h-16 w-16 rounded-full border lg:right-8 lg:top-8 lg:h-28 lg:w-28" style={{ borderColor: `${p.color}55` }}>
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
@@ -36,15 +36,15 @@ function MetricPanel({ p }: { p: Project }) {
             style={{ background: p.color, boxShadow: `0 0 20px ${p.color}` }}
           />
         </motion.div>
-        <div className="absolute inset-6 rounded-full border border-dashed" style={{ borderColor: `${p.color}44` }} />
+        <div className="absolute inset-3.5 rounded-full border border-dashed lg:inset-6" style={{ borderColor: `${p.color}44` }} />
       </div>
 
       <span className="relative font-mono text-xs uppercase tracking-[0.25em] text-white/60">{p.name}</span>
       <div className="relative">
-        <p className="font-display text-6xl font-semibold tracking-tight md:text-7xl" style={{ color: p.color }}>
+        <p className="font-display text-5xl font-semibold tracking-tight md:text-7xl" style={{ color: p.color }}>
           {p.metric.value}
         </p>
-        <p className="mt-2 text-white/80">{p.metric.label}</p>
+        <p className="mt-1.5 text-sm text-white/80 md:mt-2 md:text-base">{p.metric.label}</p>
       </div>
     </div>
   );
@@ -64,6 +64,7 @@ function ProjectCard({
   const ref = useRef<HTMLElement>(null);
   const baseTop = 96 + i * 22;
   const [top, setTop] = useState(baseTop);
+  const [expanded, setExpanded] = useState(false);
 
   // A card taller than the space under the stack pins higher, so its bottom
   // (with the demo/source links) is on screen before the next card covers it.
@@ -92,40 +93,54 @@ function ProjectCard({
         onPointerMove={trackSpotlight}
         className="spotlight group relative origin-top rounded-[2rem] border border-line bg-surface p-3 shadow-[0_-20px_60px_-20px_rgba(0,0,0,0.8)] will-change-transform md:p-4"
       >
-        <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr]">
-          <div className="flex flex-col p-4 md:p-6">
-            <div className="flex flex-wrap items-center gap-3">
+        <div className="grid grid-cols-1 gap-2 md:gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
+          <div className="flex flex-col p-3 md:p-6">
+            <div className="flex flex-wrap items-center gap-2 md:gap-3">
               <span className="font-mono text-sm text-muted">0{i + 1}</span>
               {p.badge && (
                 <span
-                  className="rounded-full border px-3 py-1 text-xs font-medium"
+                  className="rounded-full border px-2.5 py-1 text-[11px] font-medium md:px-3 md:text-xs"
                   style={{ borderColor: `${p.color}66`, color: p.color, background: `${p.color}14` }}
                 >
                   {p.badge}
                 </span>
               )}
             </div>
-            <h3 className="mt-4 font-display text-4xl font-semibold tracking-tight md:text-5xl">{p.name}</h3>
-            <p className="mt-2 text-lg text-muted">{p.title}</p>
+            <h3 className="mt-3 font-display text-3xl font-semibold tracking-tight md:mt-4 md:text-5xl">{p.name}</h3>
+            <p className="mt-1 text-base text-muted md:mt-2 md:text-lg">{p.title}</p>
 
-            <ul className="mt-6 space-y-3">
-              {p.points.map((pt) => (
-                <li key={pt} className="flex gap-3 text-[15px] leading-relaxed text-fg/85">
-                  <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: p.color }} />
+            <ul className="mt-4 space-y-3 md:mt-6">
+              {p.points.map((pt, j) => (
+                <li
+                  key={pt}
+                  className={`gap-3 text-sm leading-relaxed text-fg/85 md:flex md:text-[15px] ${j >= 2 && !expanded ? "hidden" : "flex"}`}
+                >
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full md:mt-2.5" style={{ background: p.color }} />
                   {pt}
                 </li>
               ))}
             </ul>
+            {/* Phones show the first two points; desktop always shows them all */}
+            {p.points.length > 2 && (
+              <button
+                onClick={() => setExpanded((v) => !v)}
+                aria-expanded={expanded}
+                className="mt-3 self-start py-1 text-sm font-medium md:hidden"
+                style={{ color: p.color }}
+              >
+                {expanded ? "Show less" : `Show ${p.points.length - 2} more`}
+              </button>
+            )}
 
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap gap-1.5 md:mt-6 md:gap-2">
               {p.stack.map((s) => (
-                <span key={s} className="rounded-full border border-line bg-white/[0.03] px-3 py-1 font-mono text-xs text-muted">
+                <span key={s} className="rounded-full border border-line bg-white/[0.03] px-2.5 py-1 font-mono text-[11px] text-muted md:px-3 md:text-xs">
                   {s}
                 </span>
               ))}
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-5 flex flex-wrap gap-3 md:mt-8">
               {p.live && (
                 <a
                   href={p.live}

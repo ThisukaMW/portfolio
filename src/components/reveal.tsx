@@ -39,7 +39,7 @@ export function SectionHeading({
   children?: ReactNode;
 }) {
   return (
-    <div className="mb-14 md:mb-20">
+    <div className="mb-10 md:mb-20">
       <Reveal>
         <p className="mb-5 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-muted">
           <span className="text-accent-2">{index}</span>
@@ -48,13 +48,13 @@ export function SectionHeading({
         </p>
       </Reveal>
       <Reveal delay={0.08}>
-        <h2 className="max-w-4xl font-display text-4xl font-semibold leading-[1.02] tracking-tight md:text-6xl">
+        <h2 className="max-w-4xl font-display text-[1.9rem] font-semibold leading-[1.05] tracking-tight md:text-6xl">
           {title}
         </h2>
       </Reveal>
       {children && (
         <Reveal delay={0.16}>
-          <div className="mt-6 max-w-2xl text-lg text-muted">{children}</div>
+          <div className="mt-5 max-w-2xl text-base text-muted md:mt-6 md:text-lg">{children}</div>
         </Reveal>
       )}
     </div>

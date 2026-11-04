@@ -24,7 +24,7 @@ export function Contact() {
   ];
 
   return (
-    <section id="contact" className="relative overflow-hidden px-5 pb-12 pt-28 md:px-8 md:pt-40">
+    <section id="contact" className="relative overflow-hidden px-5 pb-10 pt-16 md:px-8 md:pt-40">
       <div className="pointer-events-none absolute left-1/2 top-1/3 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-accent/15 blur-[140px]" />
 
       <div className="relative mx-auto max-w-7xl">
@@ -43,7 +43,7 @@ export function Contact() {
           </h2>
         </Reveal>
         <Reveal delay={0.12}>
-          <p className="mt-8 max-w-xl text-lg text-muted">
+          <p className="mt-6 max-w-xl text-base text-muted md:mt-8 md:text-lg">
             I&apos;m looking for a full-stack software engineering internship and I&apos;m open to freelance work. If you have a hard problem
             and a team that ships, I&apos;d like to hear about it.
           </p>
@@ -88,7 +88,7 @@ export function Contact() {
           </div>
         </Reveal>
 
-        <div className="mt-20 grid gap-4 md:grid-cols-3">
+        <div className="mt-12 grid grid-cols-1 md:mt-20 gap-4 md:grid-cols-3">
           {links.map(({ label, sub, href, icon: Icon }, i) => (
             <Reveal key={label} delay={i * 0.06}>
               <a
@@ -112,9 +112,9 @@ export function Contact() {
           ))}
         </div>
 
-        <footer className="mt-28 flex flex-col items-center justify-between gap-4 border-t border-line pt-8 text-sm text-muted md:flex-row">
+        <footer className="mt-14 flex flex-col items-center justify-between gap-4 text-center md:mt-28 md:text-left border-t border-line pt-8 text-sm text-muted md:flex-row">
           <p>© 2026 {profile.name}. Designed &amp; built in Moratuwa 🇱🇰</p>
-          <p className="font-mono text-xs">
+          <p className="hidden font-mono text-xs md:block">
             Next.js · Tailwind · Motion · press <kbd className="rounded border border-line px-1.5 py-0.5">Ctrl K</kbd>
           </p>
         </footer>
